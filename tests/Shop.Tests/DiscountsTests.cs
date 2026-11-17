@@ -21,4 +21,19 @@ public class DiscountsTests
     {
         Assert.Equal(0m, Discounts.For(500m, member: false));
     }
+
+    [Fact]
+    public void Discount_starts_above_an_order_of_exactly_100()
+    {
+        Assert.Equal(0m, Discounts.For(100m, member: true));
+        Assert.Equal(10.01m, Discounts.For(100.10m, member: true));
+    }
+
+    [Fact]
+    public void Discount_reaches_its_cap_of_25_at_an_order_of_250()
+    {
+        Assert.Equal(24m, Discounts.For(240m, member: true));
+        Assert.Equal(25m, Discounts.For(250m, member: true));
+        Assert.Equal(25m, Discounts.For(260m, member: true));
+    }
 }

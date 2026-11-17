@@ -15,4 +15,13 @@ public class SubscriptionTests
     {
         Assert.False(Subscription.IsActive(new DateOnly(2026, 1, 31), new DateOnly(2026, 6, 1)));
     }
+
+    [Fact]
+    public void Subscription_is_active_on_its_last_day_and_not_the_day_after()
+    {
+        var lastDay = new DateOnly(2026, 11, 30);
+
+        Assert.True(Subscription.IsActive(lastDay, today: lastDay));
+        Assert.False(Subscription.IsActive(lastDay, today: lastDay.AddDays(1)));
+    }
 }
