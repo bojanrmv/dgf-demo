@@ -1,0 +1,80 @@
+# dog-food settings. `dgf` looks for this file in the current folder and its parents.
+
+[analyze]
+# Files and folders to skip, in .gitignore syntax, relative to this file.
+# .gitignore is always respected, and *.d.ts, *.g.cs and *.Designer.cs are always skipped.
+exclude = [
+  # "tests/fixtures/",
+  # "**/generated/",
+]
+
+# Rows to show in the table (0 = all).
+# top = 20
+
+[limits]
+# Functions scoring above `warn` are flagged. Functions above `fail` make dgf
+# exit with code 1, which fails a CI build. Without `fail`, dgf never fails.
+warn = 6
+fail = 10
+
+# Different limits for some paths (.gitignore syntax, relative to this file).
+# Unset values fall back to the ones above; if several overrides match a file,
+# the last one wins.
+# [[limits.overrides]]
+# paths = ["legacy/", "**/tests/"]
+# warn = 20
+# fail = 40
+
+[changes]
+# `dgf changes` compares your branch and uncommitted edits with this branch.
+# base = "main"
+# "lines": functions containing a changed line; "files": every function in a changed file.
+# scope = "lines"
+# "new-or-worse": only new functions and higher scores can fail; "touched": any changed function.
+# fail_on = "new-or-worse"
+# Limits for `dgf changes` only (the hook and PR gates), over [limits]: new code
+# can be held to more than old code. `fail = 10` fails a new function above 10.
+# fail = 10
+
+[history]
+# Where `dgf analyze --save-history` keeps snapshots, relative to this file.
+# dir = ".dgf/history"
+
+[coverage]
+# Coverage reports (Cobertura XML or LCOV) or folders to search for them, relative
+# to this file. With coverage, every function also gets a CRAP score.
+paths = ["TestResults"]
+
+[mutate]
+# Files `dgf mutate` never mutates (.gitignore syntax, relative to this file).
+# exclude = ["**/Migrations/", "**/Program.cs"]
+# `dotnet test --filter` for the mutation runs: "filter" for every test project,
+# or "Project.Tests:filter" for one. With per-project filters, only those projects run.
+# test_filter = ["Shop.Tests:FullyQualifiedName~PricingTests"]
+# Test projects to use or leave out (glob patterns on the .csproj path).
+# test_projects = ["**/*.Tests.csproj"]
+# exclude_test_projects = ["**/*.Acceptance.Tests.csproj", "**/*.IntegrationTests.csproj"]
+# Where results are kept; an absolute path shares them between clones and worktrees.
+# cache_dir = ".dgf/mutation-cache"
+# Stop after this many minutes, keep what was tested, and exit with code 4.
+# max_minutes = 45
+# "closure": copy only the projects the tests need (default); "full": the whole repository.
+# sandbox = "closure"
+# Which mutators run: basic, standard (default), advanced.
+level = "basic"
+# Mutators never made, by name.
+# ignore_mutators = ["string"]
+# Calls left alone with everything inside them; `*` stays within one name part.
+# ignore_methods = ["*Log*", "ToString", "ConfigureAwait", "Dispose"]
+# Leave out constructors that only store their arguments (dependency injection).
+# skip_plain_constructors = true
+# A test run hangs after (startup + its tests' time without mutants) x factor + ms.
+# timeout_factor = 1.5
+# timeout_ms = 5000
+# Test runs at the same time (default: CPU cores - 1), `dotnet build -m:N`, and a
+# lower priority so other work on the machine stays responsive.
+# jobs = 3
+# build_jobs = 2
+# low_priority = true
+# Score bands: high and low color the report; below break, dgf exits with code 1.
+# thresholds = { high = 80, low = 60, break = 50 }
